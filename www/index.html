@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <title>Bicycle Traffic</title>
+
+        <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+
+        <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+        <link href="css/ionic.app.css" rel="stylesheet">
+        -->
+
+        <!-- ionic/angularjs js -->
+        <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+        <!-- cordova script (this will be a 404 during development) -->
+        <script src="cordova.js"></script>
+
+        <!-- your app's js -->
+        <script src="js/app.js"></script>
+        <script src="js/app.controller.js"></script>
+    </head>
+
+    <body
+        ng-app="bikegame"
+        ng-strict-di
+        ng-controller="AppCtrl"
+        class="platform-android"
+        ng-keydown="handleKeydown($event)"
+        ng-keyup="handleKeyup($event)"
+    >
+
+        <div class="game-container">
+
+            <div class="score">
+                Score: <strong ng-bind="score"></strong>
+            </div>
+
+            <div class="level">
+                Level: <strong ng-bind="level"></strong>
+            </div>
+
+            <div class="barriers">
+                <div
+                    class="barrier"
+                    ng-if="barrier"
+                    ng-style="{
+                        height: barrier.height + '%',
+                        right: barrier.right + '%'
+                    }"
+                >
+                </div>
+                <div
+                    class="blocker"
+                    ng-repeat="blocker in blockers"
+                    ng-class="blocker.type"
+                    ng-style="{
+                        bottom: blocker.bottom + '%',
+                        left: blocker.left + '%'
+                    }"
+                >
+                    <img ng-src="img/{{ blocker.type }}.png">
+                </div>
+            </div>
+
+            <div
+                class="bike"
+                ng-style="{
+                    'bottom': bike.altitude + '%'
+                }"
+            >
+                <img
+                    id="bike"
+                    src="img/bike.png"
+                    ng-style="{
+                        left: bike.left + '%'
+                    }"
+                >
+                <img
+                    id="collision"
+                    src="img/collision.png"
+                    ng-if="collision.happened"
+                    ng-style="{
+                        left: bike.left + '%'
+                    }"
+                >
+            </div>
+
+            <div
+                class="up-button"
+                on-touch="handleKeydown({key: 'ArrowUp'})"
+                on-release="handleKeyup({key: 'ArrowUp'})"
+            ></div>
+
+            <div
+                class="down-button"
+                on-touch="handleKeydown({key: 'ArrowDown'})"
+                on-release="handleKeyup({key: 'ArrowDown'})"
+            ></div>
+
+            <div class="restart-container" ng-if="collision.happened">
+                <div class="restart-popup">
+                    <p><strong>Level</strong> <span ng-bind="level"></span></p>
+                    <p><strong>Score</strong> <span ng-bind="score"></span></p>
+                    <button type="button" ng-click="restart()">Restart</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- bower:js -->
+        <!-- endinject -->
+        <!-- inject:js -->
+        <!-- endinject -->
+
+    </body>
+</html>
